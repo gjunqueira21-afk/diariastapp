@@ -34,8 +34,6 @@ export default function CalendarScreen({ data, toggleWorkedDay, ensureMonth }) {
 
   function handleToggle(dateStr) {
     if (isClosed) return
-    const dow = getDayOfWeek(dateStr)
-    if (!workDays.includes(dow)) return
     toggleWorkedDay(viewMonth, dateStr)
   }
 
@@ -90,17 +88,6 @@ export default function CalendarScreen({ data, toggleWorkedDay, ensureMonth }) {
             const isWorked = workedSet.has(dateStr)
             const dayNum = parseInt(dateStr.split('-')[2], 10)
 
-            if (!isWorkDay) {
-              return (
-                <div
-                  key={dateStr}
-                  className="aspect-square flex items-center justify-center rounded-xl text-sm text-slate-300"
-                >
-                  {dayNum}
-                </div>
-              )
-            }
-
             return (
               <button
                 key={dateStr}
@@ -111,7 +98,9 @@ export default function CalendarScreen({ data, toggleWorkedDay, ensureMonth }) {
                     ? 'bg-rose-400 text-white shadow-sm shadow-rose-200'
                     : isClosed
                     ? 'bg-slate-100 text-slate-400'
-                    : 'bg-rose-50 text-rose-500 hover:bg-rose-100 active:bg-rose-200'
+                    : isWorkDay
+                    ? 'bg-rose-50 text-rose-500 hover:bg-rose-100 active:bg-rose-200'
+                    : 'text-slate-400 hover:bg-slate-100 active:bg-slate-200'
                 }`}
                 aria-label={`${dateStr}${isWorked ? ' - trabalhado' : ''}`}
               >
@@ -132,11 +121,11 @@ export default function CalendarScreen({ data, toggleWorkedDay, ensureMonth }) {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-lg bg-rose-50 border border-rose-200" />
-            <span className="text-slate-600">Dia de trabalho</span>
+            <span className="text-slate-600">Dia esperado</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-lg bg-white border border-slate-100" />
-            <span className="text-slate-400">Folga</span>
+            <span className="text-slate-400">Outros dias</span>
           </div>
         </div>
       </div>
@@ -147,12 +136,12 @@ export default function CalendarScreen({ data, toggleWorkedDay, ensureMonth }) {
           <span className="font-bold text-rose-500">{workedCount}</span>
         </div>
         <div className="flex justify-between text-sm mt-2">
-          <span className="text-slate-500">Total de dias de trabalho no mês</span>
+          <span className="text-slate-500">Dias esperados no mês</span>
           <span className="font-medium text-slate-600">{workDayCount}</span>
         </div>
         {workedCount === 0 && !isClosed && (
           <p className="text-xs text-slate-400 mt-3 text-center">
-            Toque nos dias em rosa para marcar como trabalhado 💡
+            Toque em qualquer dia para marcar como trabalhado 💡
           </p>
         )}
       </div>
