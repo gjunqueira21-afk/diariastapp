@@ -62,7 +62,12 @@ export default function HomeScreen({ data, closeMonth }) {
       lines.push(`💵 Valor projetado: ${formatBRL(projected)}`)
     }
     if (carryover > 0) {
-      lines.push(`⚠️ Dias a compensar: ${carryover} diária(s)`)
+      lines.push(``)
+      lines.push(`⚠️ *Diárias devidas do mês anterior: ${carryover}*`)
+    }
+    if (!currentMonth.closed && owedDays > 0) {
+      lines.push(``)
+      lines.push(`⚠️ *Diárias que ficarão devendo neste mês: ${owedDays}*`)
     }
     return lines.join('\n')
   }
@@ -75,7 +80,7 @@ export default function HomeScreen({ data, closeMonth }) {
   return (
     <div className="px-4 pt-6 pb-28 space-y-4">
       <div className="bg-gradient-to-br from-rose-400 to-pink-400 rounded-2xl p-5 text-white shadow-md">
-        <div className="text-2xl font-bold mb-1">Olá! 👋</div>
+        <div className="text-2xl font-bold mb-1">Olá, {settings.name}! 👋</div>
         <div className="text-rose-100 text-sm">{monthLabel}</div>
         {currentMonth.closed && (
           <div className="mt-2 inline-flex items-center gap-1.5 bg-white/20 rounded-full px-3 py-1 text-sm">
